@@ -1,66 +1,76 @@
 package ru.netology.domine;
 
 public class Radio {
-    private int currentStation;// Номер текущей радиостанции
-    private int currentVolume;// Текущий уровень звука
+    private int maxStation;
+    private int minStation = 0;
+    private int currentStation;//  Текущая радиостанция
+    private int minVolume = 0;
+    private int maxVolume = 100;
+    private int currentVolume;//  Текущая громкость
 
-    public int getCurrentStation() {// получить актуальный номер станции
+    public Radio() {
+        this.maxStation = 9;//  Конструктор
+    }
+
+    public Radio(int summStations) {// Счетчик
+        this.maxStation = summStations - 1;
+    }
+
+    public int getCurrentStation() {// Получить номер станции
         return currentStation;
     }
 
-    public void setCurrentStation(int currentStation) {//установить текущий номер станции
-        if (currentStation < 0) {// Не может быть меньше 0
+    public void setCurrentStation(int currentStation) {//  Установить текущую станцию
+        if (currentStation < minStation) {// Меньше минимальной
             return;
         }
-        if (currentStation > 9) {// Не может быть больше 9
+        if (currentStation > maxStation) {//  Больше максимальной (в конструкторе)
             return;
         }
         this.currentStation = currentStation;
     }
 
-    public void nextStation() {// Нажать на кнопку следующая станция
-        this.currentStation = currentStation + 1;
-        if (currentStation > 9) {//станций 0-9 >= 10
+    public void nextStation() {//  Следующая станция (+1 станция)
+        if (currentStation == maxStation) {//  Текущая станция равна или нет Mах?
             this.currentStation = 0;
+            return;
         }
+        this.currentStation = currentStation + 1;
     }
 
-    public void prevStation() {// нажать на кнопку предыдущая станция
-        this.currentStation = currentStation - 1;
-        if (currentStation == -1) {//было 0 стало -1 =9
+    public void previousStation() {// Предыдущая станция (-1 станция)
+        if (currentStation == minStation) {//  Текущая станция равна или нет Min?
             this.currentStation = 9;
-        }
-    }
-
-    public void stationInput(int currentStation) {// Задать номер станции
-        if (currentStation < 0) { // Не должно быть отрицательным
             return;
         }
-        if (currentStation > 9) {// Не должно быть больше 9
-            return;
-        }
-        this.currentStation = currentStation;
+        this.currentStation = currentStation - 1;
     }
 
-    public int getCurrentVolume() {// Получить уровень звука
+    public int getCurrentVolume() {//  Получить уровень звука
         return currentVolume;
     }
 
-    public void setCurrentVolume(int currentVolume) {// Установить уровень звука
+    public void setCurrentVolume(int currentVolume) {//  Установить уровень звука
+        if (currentVolume < minVolume) {// Если меньше минимума
+            return;
+        }
+        if (currentVolume > maxVolume) {//  Если больше максимума (в конструкторе)
+            return;
+        }
         this.currentVolume = currentVolume;
     }
 
-    public void volumeUp() {// Увеличить громкость на 1, если больше max то устанавливается max
-        this.currentVolume = currentVolume + 1;
-        if (currentVolume >= 10) { //(в пределах от 0 до 10)
-            this.currentVolume = 10;
+    public void volumeUp() {//  Громкость +1
+        if (currentVolume == maxVolume) { // Если равна Max
+            return;
         }
+        this.currentVolume = currentVolume + 1;
     }
 
-    public void volumeDown() {// Уменьшить громкость на 1 Если меньше min, то устанавливается min
-        this.currentVolume = currentVolume - 1;
-        if (currentVolume <= 0) { //(в пределах от 0 до 10)
-            this.currentVolume = 0;
+    public void volumeDown() {//  Громкость -1
+        if (currentVolume == minVolume) {   //  Если равна Min
+            return;
         }
+        this.currentVolume = currentVolume - 1;
     }
 }
